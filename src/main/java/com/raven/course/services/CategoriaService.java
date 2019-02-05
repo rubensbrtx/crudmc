@@ -1,5 +1,6 @@
 package com.raven.course.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,9 @@ public class CategoriaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new ConstraintViolationException("Nao eh possivel excluir uma categoria que possui produtos");
 		}
+	}
+
+	public List<Categoria> findAll() {
+		return categoriaRepository.findAll();
 	}
 }
