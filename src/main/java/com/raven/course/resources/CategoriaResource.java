@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.raven.course.domain.Categoria;
-import com.raven.course.dto.CategoriaDTO;
+import com.raven.course.dto.CategoriaResponseDTO;
 import com.raven.course.services.CategoriaService;
 
 @RestController
@@ -63,25 +63,25 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<List<CategoriaDTO>> findAll() {
+	public ResponseEntity<List<CategoriaResponseDTO>> findAll() {
 		List<Categoria> categorias = categoriaService.findAll();	
 		
-		List<CategoriaDTO> categoriaDto = categorias.stream()
-				.map(obj -> new CategoriaDTO(obj))
+		List<CategoriaResponseDTO> categoriaDto = categorias.stream()
+				.map(obj -> new CategoriaResponseDTO(obj))
 				.collect(Collectors.toList());
 		
 		return ResponseEntity.ok().body(categoriaDto);
 	}
 	
 	@GetMapping(value = "/page")
-	public ResponseEntity<Page<CategoriaDTO>> findPage(
+	public ResponseEntity<Page<CategoriaResponseDTO>> findPage(
 			@RequestParam(value = "page", defaultValue = "0") Integer page, 
 			@RequestParam(value = "size", defaultValue = "24") Integer size, 
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
 		
 		Page<Categoria> categorias = categoriaService.findPage(page, size, orderBy, direction);
-		Page<CategoriaDTO> categoriasDto = categorias.map(obj -> new CategoriaDTO(obj));
+		Page<CategoriaResponseDTO> categoriasDto = categorias.map(obj -> new CategoriaResponseDTO(obj));
 		
 		return ResponseEntity.ok().body(categoriasDto);
 	}
