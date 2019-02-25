@@ -40,8 +40,9 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return categoriaRepository.save(obj);
+		Categoria newobj = find(obj.getId());
+		updateData(newobj, obj);
+		return categoriaRepository.save(newobj);
 	}
 	
 	public void delete(Integer id) {
@@ -61,5 +62,9 @@ public class CategoriaService {
 		
 		PageRequest pageRequest = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
 		return categoriaRepository.findAll(pageRequest);
+	}
+
+	private void updateData(Categoria newobj, Categoria obj){
+		newobj.setNome(obj.getNome());
 	}
 }
