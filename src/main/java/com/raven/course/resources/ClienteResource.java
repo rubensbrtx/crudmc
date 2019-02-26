@@ -2,6 +2,7 @@ package com.raven.course.resources;
 
 import com.raven.course.domain.Cliente;
 import com.raven.course.dto.ClienteDTO;
+import com.raven.course.dto.ClienteNewDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.raven.course.domain.Cliente;
 import com.raven.course.services.ClienteService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,15 @@ public class ClienteResource {
 		service.update(obj);
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto){
+		Cliente obj = service.fromDTO(objDto);
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
 
 	@DeleteMapping(value = "/{id}")
